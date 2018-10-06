@@ -1,6 +1,6 @@
 
 class Player:
-    VERSION = "First try"
+    VERSION = "Horse meat is tasty"
 
     def betRequest(self, g):
 
@@ -11,21 +11,51 @@ class Player:
         try:
             raise_amount = 500
             in_action = g["players"][g["in_action"]]
-            raise_amount = 500
+            if g["round"] == 0:
+                raise_amount = 500
+            elif g["round"] == 1:
+                raise_amount = 200
+            else:
+                raise_amount = 0
             strength = self.strength(in_action["hole_cards"])
+            if strength <= 12:
+                return 0
             if strength > 17:
                 raise_amount += 100
             if strength > 21:
                 raise_amount += 100
-            result = int(g["current_buy_in"] - g["players"][g["in_action"]]["bet"] + raise_amount)
+            result = int(g["current_buy_in"] - in_action["bet"] + raise_amount)
             #print(result)
             return result
         except Exception as ex:
             return 1200
 
+    def _call(self, g):
+        in_action = g["players"][g["in_action"]]
+        return int(g["current_buy_in"] - in_action["bet"])
+
+    def _raise(self, g, amount):
+        assert isinstance(amount, int)
+        in_action = g["players"][g["in_action"]]
+        return int(g["current_buy_in"] - in_action["bet"] + amount)
+
 
     def strength(self, cards):
-        return (self.value_cards(cards[0]["rank"]) + self.value_cards(cards[1]["rank"])) #/ (2 * 14)) * 10
+        card1 = int(self.value_cards(cards[0]["rank"]))
+        card2 = int(self.value_cards(cards[1]["rank"]))
+        card1s = cards[0]["suit"]
+        card2s = cards[1]["suit"]
+
+        result = card1 + card2 #/ (2 * 14)) * 10
+
+        # flush
+        if card1s == card2s:
+            result = int(result*1.2)
+
+        # sorra
+        if abs(card1 - card2) <= 2:
+            result = int(result*1.2)
+        return result
 
     def value_cards(self, rank):
         switcher = {
