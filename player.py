@@ -1,5 +1,6 @@
 import urllib2
 import json
+import traceback
 
 class Player:
     VERSION = "Lobster eats horses"
@@ -19,15 +20,14 @@ class Player:
         try:
             if self.config["force_all_in"]:
                 return 5000
+
             if self.config["basic_raise_amount"]:
                 assert isinstance(self.config["basic_raise_amount"], int)
                 if self.config["basic_raise_amount"] >= 0:
                     self.raise_amount = int(self.config["basic_raise_amount"])
 
-            raise_amount = 500
             in_action = g["players"][g["in_action"]]
-            self.raise_amount = 0
-            
+
             if len(g["community_cards"]) == 0:
                 self.pre_flop(g)
             elif len(g["community_cards"]) == 3:
@@ -45,6 +45,7 @@ class Player:
             return result
         except Exception as ex:
             print(ex)
+            traceback.print_exc()
             return 1200
 
     def pre_flop(self, g):
