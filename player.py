@@ -63,6 +63,9 @@ class Player:
                 self.raise_amount = -100
             else:
                 self.raise_amount = 0
+            stack_defense = 0.1
+            if g["current_buy_in"] > int(in_action["stack"] * stack_defense):
+                return 0
 
         if strength >= 19:
             self.raise_amount += 100
