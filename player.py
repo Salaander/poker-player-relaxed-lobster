@@ -1,6 +1,6 @@
 
 class Player:
-    VERSION = "&#129438; eats &#128014;"
+    VERSION = "Lobster beats 🐎"
 
     def betRequest(self, g):
 
@@ -62,6 +62,11 @@ class Player:
         # sorra
         if abs(card1 - card2) <= 2:
             result = int(result*1.1)
+
+        # pair
+        if card1 == card2:
+            result = int(result*1.45)
+
         return result
 
     def value_cards(self, rank):
