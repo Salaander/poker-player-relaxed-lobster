@@ -32,13 +32,10 @@ class Player:
                 self.pre_flop(g)
             elif len(g["community_cards"]) == 3:
                 self.flop(g)
-                self.action_maching_card(g)
             elif len(g["community_cards"]) == 4:
                 self.turn(g)
-                self.action_maching_card(g)
             elif len(g["community_cards"]) == 5:
                 self.river(g)
-                self.action_maching_card(g)
 
             result = int(g["current_buy_in"] - in_action["bet"] + self.raise_amount)
 
@@ -54,7 +51,7 @@ class Player:
     def action_maching_card(self,g):
         in_action = g["players"][g["in_action"]]
         for card in in_action["hole_cards"]:
-            if self.check_matching_cards(card,g["community_cards"]) > 0:
+            if self.check_matching_cards(card,g["community_cards"]) > 0 and self.value_cards(card) > 8:
                 self.raise_amount += 100
 
     def pre_flop(self, g):
@@ -80,12 +77,15 @@ class Player:
 
     def flop(self,g):
         self.raise_amount = 0
+        self.action_maching_card(g)
 
     def turn(self,g):
         self.raise_amount = 0
+        self.action_maching_card(g)
 
     def river(self,g):
         self.raise_amount = 0
+        self.action_maching_card(g)
 
     def _call(self, g):
         in_action = g["players"][g["in_action"]]
@@ -135,6 +135,7 @@ class Player:
             if (self.value_cards(card) == self.value_cards(comm_card)):
                 match_count += 1
         return match_count
+        # return len([])
 
     def showdown(self, game_state):
         pass
