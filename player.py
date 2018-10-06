@@ -28,10 +28,13 @@ class Player:
                 self.pre_flop(g)
             elif len(g["community_cards"]) == 3:
                 self.flop(g)
+                self.action_maching_card(g)
             elif len(g["community_cards"]) == 4:
                 self.turn(g)
+                self.action_maching_card(g)
             elif len(g["community_cards"]) == 5:
                 self.river(g)
+                self.action_maching_card(g)
 
             result = int(g["current_buy_in"] - in_action["bet"] + self.raise_amount)
 
@@ -42,6 +45,12 @@ class Player:
         except Exception as ex:
             print(ex)
             return 1200
+
+    def action_maching_card(self,g):
+        in_action = g["players"][g["in_action"]]
+        for card in in_action["hole_cards"]:
+            if self.check_matching_cards(card,g["community_cards"]) > 0:
+                self.raise_amount += 100
 
     def pre_flop(self, g):
         in_action = g["players"][g["in_action"]]
@@ -118,7 +127,7 @@ class Player:
     def check_matching_cards(self, card, community_cards):
         match_count = 0
         for comm_card in community_cards:
-            if (self.value_cards(card) == self.value_cards(community_cards)):
+            if (self.value_cards(card) == self.value_cards(comm_card)):
                 match_count += 1
         return match_count
 
