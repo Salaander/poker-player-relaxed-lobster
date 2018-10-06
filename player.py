@@ -1,6 +1,6 @@
 
 class Player:
-    VERSION = "Horse meat is tasty"
+    VERSION = u"\U0001F99E eats \U0001F40E"
 
     def betRequest(self, g):
 
