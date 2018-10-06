@@ -20,10 +20,17 @@ class Player:
             strength = self.strength(in_action["hole_cards"])
             if strength <= 12:
                 return 0
-            if strength > 17:
+            if 12 < strength < 19:
+                if g["pot"] > 200:
+                    raise_amount = -100
+                else:
+                    raise_amount = 0
+            if strength >= 19:
                 raise_amount += 100
-            if strength > 21:
-                raise_amount += 100
+                if g["pot"] > 500:
+                    raise_amount = 0
+            if strength >= 24:
+                raise_amount += 300
             result = int(g["current_buy_in"] - in_action["bet"] + raise_amount)
             #print(result)
             return result
