@@ -1,6 +1,6 @@
 
 class Player:
-    VERSION = "Lobster beats"
+    VERSION = "Lobster eats horses"
 
     def betRequest(self, g):
 
@@ -11,12 +11,15 @@ class Player:
         try:
             raise_amount = 500
             in_action = g["players"][g["in_action"]]
+            """
             if g["round"] == 0:
                 raise_amount = 500
             elif g["round"] == 1:
                 raise_amount = 200
             else:
                 raise_amount = 0
+            """
+            raise_amount = 0
             strength = self.strength(in_action["hole_cards"])
             if strength <= 12:
                 return 0
