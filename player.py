@@ -8,18 +8,20 @@ class Player:
         # current_buy_in - players[in_action][bet]
 
         # current_buy_in - players[in_action][bet] + minimum_raise
-        raise_amount = 500
-        """
-        in_action = g["players"][g["in_action"]]
-        raise_amount = 500
-        strength = self.strength(in_action["hole_cards"])
-        if strength > 17:
-            raise_amount += 100
-        if strength > 21:
-            raise_amount += 100
-        """
-        return g["current_buy_in"] - g["players"][g["in_action"]]["bet"] + raise_amount
-        #return 0
+        try:
+            raise_amount = 500
+            in_action = g["players"][g["in_action"]]
+            raise_amount = 500
+            strength = self.strength(in_action["hole_cards"])
+            if strength > 17:
+                raise_amount += 100
+            if strength > 21:
+                raise_amount += 100
+            result = int(g["current_buy_in"] - g["players"][g["in_action"]]["bet"] + raise_amount)
+            #print(result)
+            return result
+        except Exception as ex:
+            return 1200
 
 
     def strength(self, cards):
@@ -32,7 +34,7 @@ class Player:
                 "K": 13,
                 "A": 14,
         }
-        return switcher.get(rank, rank)
+        return int(switcher.get(rank, rank))
 
 
     def showdown(self, game_state):
