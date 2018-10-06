@@ -8,11 +8,14 @@ class Player:
     def __init__(self):
         self.raise_amount = 0
         self.config = {}
+        self.config["force_all_in"] = False
+        self.config["basic_raise_amount"] = 0
         try:
-            self.config_url = "http://salaander.hu/lean.json"
-            response = urllib2.urlopen(self.config_url)
-            content = str(response.read())
-            self.config = json.loads(content)
+            if False:
+                self.config_url = "http://salaander.hu/lean.json"
+                response = urllib2.urlopen(self.config_url, timeout=1)
+                content = str(response.read())
+                self.config = json.loads(content)
         except Exception as e:
             print(e)
 
