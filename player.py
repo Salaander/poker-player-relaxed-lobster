@@ -58,6 +58,9 @@ class Player:
         in_action = g["players"][g["in_action"]]
         strength = self.strength(in_action["hole_cards"])
 
+        if strength < 24 and self.am_i_dealer():
+            return 0
+
         if strength <= 12:
             return 0
 
@@ -74,6 +77,9 @@ class Player:
 
         if strength >= 24:
             self.raise_amount += 300
+
+    def am_i_dealer(self, g):
+        return g["in_action"] == g["dealer"]
 
     def flop(self,g):
         self.raise_amount = 0
