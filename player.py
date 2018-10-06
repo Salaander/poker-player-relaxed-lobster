@@ -3,6 +3,7 @@ import json
 
 class Player:
     VERSION = "Lobster eats horses"
+    raise_amount = 0
 
     def __init__(self):
         self.config = {}
@@ -15,47 +16,54 @@ class Player:
             print(e)
 
     def betRequest(self, g):
-
-        #
-        # current_buy_in - players[in_action][bet]
-
-        # current_buy_in - players[in_action][bet] + minimum_raise
         try:
             if self.config["force_all_in"]:
                 return 5000
 
             raise_amount = 500
             in_action = g["players"][g["in_action"]]
-            """
-            if g["round"] == 0:
-                raise_amount = 500
-            elif g["round"] == 1:
-                raise_amount = 200
-            else:
-                raise_amount = 0
-            """
-            raise_amount = 0
-            strength = self.strength(in_action["hole_cards"])
-            if strength <= 12:
-                return 0
-            if 12 < strength < 19:
-                if g["pot"] > 200:
-                    raise_amount = -100
-                else:
-                    raise_amount = 0
-            if strength >= 19:
-                raise_amount += 100
-                if g["pot"] > 500:
-                    raise_amount = 0
-            if strength >= 24:
-                raise_amount += 300
-            result = int(g["current_buy_in"] - in_action["bet"] + raise_amount)
-            #print(result)
+            self.raise_amount = 0
+            
+            if len(g["community_cards"])==0:
+                pre_flop(g,in_action)
+            elif len(g["community_cards"])==3:
+                flop(g)
+            elif len(g["community_cards"])==4:
+                turn(g)
+            elif len(g["community_cards"])==5:
+                river(g)
+
+            result = int(g["current_buy_in"] - in_action["bet"] + self.raise_amount)
             if result < 0:
                 result = 0
             return result
         except Exception as ex:
             return 1200
+
+    def pre_flop(self, g,in_action):
+        strength = self.strength(in_action["hole_cards"])
+        if strength <= 12:
+            return 0
+        if 12 < strength < 19:
+            if g["pot"] > 200:
+                self.raise_amount = -100
+            else:
+                self.raise_amount = 0
+        if strength >= 19:
+            self.raise_amount += 100
+            if g["pot"] > 500:
+                self.raise_amount = 0
+        if strength >= 24:
+            self.raise_amount += 300
+
+    def flop(self,g):
+        self.raise_amount = 0
+
+    def turn(self,g):
+        self.raise_amount = 0
+
+    def river(self,g):
+        self.raise_amount = 0
 
     def _call(self, g):
         in_action = g["players"][g["in_action"]]
