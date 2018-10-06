@@ -3,9 +3,9 @@ import json
 
 class Player:
     VERSION = "Lobster eats horses"
-    raise_amount = 0
 
     def __init__(self):
+        self.raise_amount = 0
         self.config = {}
         try:
             self.config_url = "http://salaander.hu/lean.json"
@@ -19,6 +19,10 @@ class Player:
         try:
             if self.config["force_all_in"]:
                 return 5000
+            if self.config["basic_raise_amount"]:
+                assert isinstance(self.config["basic_raise_amount"], int)
+                if self.config["basic_raise_amount"] >= 0:
+                    self.raise_amount = int(self.config["basic_raise_amount"])
 
             raise_amount = 500
             in_action = g["players"][g["in_action"]]
