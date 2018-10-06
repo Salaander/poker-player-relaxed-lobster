@@ -68,8 +68,8 @@ class Player:
 
 
     def strength(self, cards):
-        card1 = int(self.value_cards(cards[0]["rank"]))
-        card2 = int(self.value_cards(cards[1]["rank"]))
+        card1 = int(self.value_cards(cards[0]))
+        card2 = int(self.value_cards(cards[1]))
         card1s = cards[0]["suit"]
         card2s = cards[1]["suit"]
 
