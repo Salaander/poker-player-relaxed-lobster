@@ -21,6 +21,9 @@ class Player:
 
         # current_buy_in - players[in_action][bet] + minimum_raise
         try:
+            if self.config["force_all_in"]:
+                return 5000
+
             raise_amount = 500
             in_action = g["players"][g["in_action"]]
             """
