@@ -8,6 +8,7 @@ class Player:
         # current_buy_in - players[in_action][bet]
 
         # current_buy_in - players[in_action][bet] + minimum_raise
+        raise_amount = 500
         """
         in_action = g["players"][g["in_action"]]
         raise_amount = 500
