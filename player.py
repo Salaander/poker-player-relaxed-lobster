@@ -1,6 +1,18 @@
+import urllib2
+import json
 
 class Player:
     VERSION = "Lobster eats horses"
+
+    def __init__(self):
+        self.config = {}
+        try:
+            self.config_url = "http://salaander.hu/lean.json"
+            response = urllib2.urlopen(self.config_url)
+            content = str(response.read())
+            self.config = json.loads(content)
+        except Exception as e:
+            print(e)
 
     def betRequest(self, g):
 
