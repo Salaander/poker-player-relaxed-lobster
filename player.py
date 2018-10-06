@@ -51,9 +51,18 @@ class Player:
             traceback.print_exc()
             return 1200
 
+    def action_maching_card(self,g):
+        in_action = g["players"][g["in_action"]]
+        for card in in_action["hole_cards"]:
+            if self.check_matching_cards(card,g["community_cards"]) > 0 and self.value_cards(card) > 8:
+                self.raise_amount += 100
+
     def pre_flop(self, g):
         in_action = g["players"][g["in_action"]]
         strength = self.strength(in_action["hole_cards"])
+
+        if strength < 24 and self.am_i_dealer():
+            return 0
 
         if strength <= 12:
             return 0
@@ -75,14 +84,20 @@ class Player:
         if strength >= 24:
             self.raise_amount += 300
 
+    def am_i_dealer(self, g):
+        return g["in_action"] == g["dealer"]
+
     def flop(self,g):
         self.raise_amount = 0
+        self.action_maching_card(g)
 
     def turn(self,g):
         self.raise_amount = 0
+        self.action_maching_card(g)
 
     def river(self,g):
         self.raise_amount = 0
+        self.action_maching_card(g)
 
     def _call(self, g):
         in_action = g["players"][g["in_action"]]
@@ -129,9 +144,17 @@ class Player:
     def check_matching_cards(self, card, community_cards):
         match_count = 0
         for comm_card in community_cards:
-            if (self.value_cards(card) == self.value_cards(community_cards)):
+            if (self.value_cards(card) == self.value_cards(comm_card)):
                 match_count += 1
         return match_count
+        # return len([])
+
+    def check_flush(self, cards, community_cards):
+        suits = [i["suit"] for i in cards + community_cards]
+        for i in set(suits):
+            if suits.count(i) >= 5:
+                return True
+        return False
 
     def showdown(self, game_state):
         pass
