@@ -89,7 +89,8 @@ class Player:
 
         return result
 
-    def value_cards(self, rank):
+    def value_cards(self, card):
+        rank = card["rank"]
         switcher = {
                 "J": 11,
                 "Q": 12,
@@ -98,6 +99,12 @@ class Player:
         }
         return int(switcher.get(rank, rank))
 
+    def check_matching_cards(self, card, community_cards):
+        match_count = 0
+        for comm_card in community_cards:
+            if (value_cards(card) == value_cards(community_cards)):
+                match_count++
+        return match_count
 
     def showdown(self, game_state):
         pass
