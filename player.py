@@ -23,7 +23,7 @@ class Player:
             raise_amount = 500
             in_action = g["players"][g["in_action"]]
             self.raise_amount = 0
-            
+
             if len(g["community_cards"]) == 0:
                 self.pre_flop(g)
             elif len(g["community_cards"]) == 3:
@@ -130,6 +130,13 @@ class Player:
             if (self.value_cards(card) == self.value_cards(comm_card)):
                 match_count += 1
         return match_count
+
+    def check_flush(self, cards, community_cards):
+        suits = [i["suit"] for i in cards + community_cards]
+        for i in set(suits):
+            if suits.count(i) >= 5:
+                return True
+        return False
 
     def showdown(self, game_state):
         pass
