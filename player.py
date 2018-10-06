@@ -24,35 +24,43 @@ class Player:
             in_action = g["players"][g["in_action"]]
             self.raise_amount = 0
             
-            if len(g["community_cards"])==0:
-                pre_flop(g,in_action)
-            elif len(g["community_cards"])==3:
-                flop(g)
-            elif len(g["community_cards"])==4:
-                turn(g)
-            elif len(g["community_cards"])==5:
-                river(g)
+            if len(g["community_cards"]) == 0:
+                self.pre_flop(g)
+            elif len(g["community_cards"]) == 3:
+                self.flop(g)
+            elif len(g["community_cards"]) == 4:
+                self.turn(g)
+            elif len(g["community_cards"]) == 5:
+                self.river(g)
 
             result = int(g["current_buy_in"] - in_action["bet"] + self.raise_amount)
+
             if result < 0:
                 result = 0
+
             return result
         except Exception as ex:
+            print(ex)
             return 1200
 
-    def pre_flop(self, g,in_action):
+    def pre_flop(self, g):
+        in_action = g["players"][g["in_action"]]
         strength = self.strength(in_action["hole_cards"])
+
         if strength <= 12:
             return 0
+
         if 12 < strength < 19:
             if g["pot"] > 200:
                 self.raise_amount = -100
             else:
                 self.raise_amount = 0
+
         if strength >= 19:
             self.raise_amount += 100
             if g["pot"] > 500:
                 self.raise_amount = 0
+
         if strength >= 24:
             self.raise_amount += 300
 
@@ -110,8 +118,8 @@ class Player:
     def check_matching_cards(self, card, community_cards):
         match_count = 0
         for comm_card in community_cards:
-            if (value_cards(card) == value_cards(community_cards)):
-                match_count++
+            if (self.value_cards(card) == self.value_cards(community_cards)):
+                match_count += 1
         return match_count
 
     def showdown(self, game_state):
