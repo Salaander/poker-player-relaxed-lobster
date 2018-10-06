@@ -33,6 +33,8 @@ class Player:
                 raise_amount += 300
             result = int(g["current_buy_in"] - in_action["bet"] + raise_amount)
             #print(result)
+            if result < 0:
+                result = 0
             return result
         except Exception as ex:
             return 1200
