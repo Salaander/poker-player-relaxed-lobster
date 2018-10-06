@@ -8,8 +8,8 @@ class Player:
         # current_buy_in - players[in_action][bet]
 
         # current_buy_in - players[in_action][bet] + minimum_raise
-
-        return g["current_buy_in"] - g["palyers"][g["in_action"]][bet] + g["raise"] + 300
+        return g["current_buy_in"] - g["players"][g["in_action"]]["bet"] + 500
+        #return 0
 
     """
     def _raise(g):
