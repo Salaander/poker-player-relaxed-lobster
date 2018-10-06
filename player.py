@@ -8,6 +8,7 @@ class Player:
         # current_buy_in - players[in_action][bet]
 
         # current_buy_in - players[in_action][bet] + minimum_raise
+        """
         in_action = g["players"][g["in_action"]]
         raise_amount = 500
         strength = self.strength(in_action["hole_cards"])
@@ -15,6 +16,7 @@ class Player:
             raise_amount += 100
         if strength > 21:
             raise_amount += 100
+        """
         return g["current_buy_in"] - g["players"][g["in_action"]]["bet"] + raise_amount
         #return 0
 
