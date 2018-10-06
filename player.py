@@ -1,6 +1,6 @@
 
 class Player:
-    VERSION = "Lobster beats 🐎"
+    VERSION = "Lobster beats"
 
     def betRequest(self, g):
 
