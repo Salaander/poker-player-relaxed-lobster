@@ -57,11 +57,11 @@ class Player:
 
         # flush
         if card1s == card2s:
-            result = int(result*1.2)
+            result = int(result*1.15)
 
         # sorra
         if abs(card1 - card2) <= 2:
-            result = int(result*1.2)
+            result = int(result*1.1)
         return result
 
     def value_cards(self, rank):
