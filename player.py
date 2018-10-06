@@ -143,5 +143,12 @@ class Player:
         return match_count
         # return len([])
 
+    def check_flush(self, cards, community_cards):
+        suits = [i["suit"] for i in cards + community_cards]
+        for i in set(suits):
+            if suits.count(i) >= 5:
+                return True
+        return False
+
     def showdown(self, game_state):
         pass
