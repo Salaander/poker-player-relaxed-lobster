@@ -1,6 +1,6 @@
 
 class Player:
-    VERSION = u"\U0001F99E eats \U0001F40E"
+    VERSION = "&#129438; eats &#128014;"
 
     def betRequest(self, g):
 
